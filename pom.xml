@@ -10,7 +10,7 @@
 
   <groupId>org.owasp.webgoat</groupId>
   <artifactId>webgoat</artifactId>
-  <version>2023.9-SNAPSHOT</version>
+  <version>2024.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>WebGoat</name>
@@ -108,7 +108,8 @@
   </issueManagement>
 
   <properties>
-    <!-- Shared properties with plugins and version numbers across submodules-->
+    <!-- Shared properties with plugins and version numbers across
+		submodules-->
     <asciidoctorj.version>2.5.10</asciidoctorj.version>
     <bootstrap.version>5.3.2</bootstrap.version>
     <cglib.version>3.3.0</cglib.version>
@@ -126,6 +127,9 @@
     <jose4j.version>0.9.3</jose4j.version>
     <jquery.version>3.7.0</jquery.version>
     <jsoup.version>1.17.2</jsoup.version>
+
+    <!-- log4j vulnerable overide the parent pom -->
+    <log4j2.version>2.14.1</log4j2.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
     <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
@@ -278,6 +282,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+   
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -296,13 +301,44 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+      <version>2.6.3</version>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-tomcat</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+          <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
+    <!-- Log4j CVE- CVE-2021-44228 spring-boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
+    </dependency>
+    <!-- Spring for Shell after enabling unable to run project-->
+    <!-- probably due to version conflict
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.3.15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>5.3.15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>5.3.15</version>
+		</dependency> -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
@@ -444,26 +480,133 @@
       <artifactId>spring-boot-properties-migrator</artifactId>
       <scope>runtime</scope>
     </dependency>
-  </dependencies>
+    <!-- Write new Profile for open source -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-snakeyaml</artifactId>
+      <!--<version>2.19.0</version> -->
+      <version>2.18.0</version>
+    </dependency>
+    <!--
+		https://security.snyk.io/package/maven/com.alibaba.nacos:nacos-spring-context/1.1.2 
+CVE-2023-39106 -->
 
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </pluginRepository>
-  </pluginRepositories>
+    <dependency>
+      <groupId>com.alibaba.nacos</groupId>
+      <artifactId>nacos-spring-context</artifactId>
+      <version>1.1.1</version>
+      <!-- <version>1.1.2</version> -->
+    </dependency>
+
+    <!--
+		https://security.snyk.io/package/maven/com.alibaba.nacos:nacos-spring-context/1.1.2 
+
+CVE-2023-39106-->
+    <!-- commmented below for Log4j  CVE-2021-44228 explicitly configured
+		log4j.properties to 2.14.1 with exclusion of logback and inclusuion of
+		spring-boot-starter-log4j2  -->
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.14.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.14.1</version>
+    </dependency>
+
+    <!-- 
+		https://security.snyk.io/vuln/SNYK-JAVA-ORGAPACHEHUGEGRAPH-6672128  
+			Command Injection org.apache.hugegraph:hugegraph-api
+		CVE-2024-27348
+		
+		groovy conflict on execuction 
+	-->
+    <!--	<dependency>
+			<groupId>org.apache.hugegraph</groupId>
+			<artifactId>hugegraph-api</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hugegraph</groupId>
+			<artifactId>hugegraph-common</artifactId>
+			<version>1.2.0</version>
+		</dependency> -->
+    <!-- end CVE-2024-27348 -->
+
+    <!-- 
+		https://github.com/advisories/GHSA-qxqf-2mfx-x8jw
+		https://security.snyk.io/vuln/SNYK-JAVA-ORGVERAPDF-6513793
+		CVE-2024-28109
+		-->
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>core-jakarta</artifactId>
+      <version>1.24.1</version>
+    </dependency>
+    <!-- end CVE-2024-28109 -->
+
+    <!-- 
+
+https://security.snyk.io/vuln/SNYK-JAVA-COMAMAZONREDSHIFT-6841702
+		CVE-2024-32888 -->
+
+    <dependency>
+      <groupId>com.amazon.redshift</groupId>
+      <artifactId>redshift-jdbc42</artifactId>
+      <version>2.1.0.27</version>
+    </dependency>
+
+    <!-- end CVE-2024-32888 -->
+
+    <!-- 
+
+https://security.snyk.io/vuln/SNYK-JAVA-ORGPOSTGRESQL-6252740  CVE-2022-26520 -->
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.3.0</version>
+    </dependency>
+
+    <!-- end CVE-2022-26520 -->
+
+    <!--CVE-2023-39017 BDSA Reporting on quart-job -->
+
+    <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
+<dependency>
+    <groupId>org.quartz-scheduler</groupId>
+    <artifactId>quartz-jobs</artifactId>
+    <version>2.5.0-rc1</version>
+</dependency>
+    <!-- end CVE-2023-39017 -->
+  </dependencies>
+  <!--
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</pluginRepository>
+	</pluginRepositories> -->
 
   <build>
     <plugins>
@@ -474,7 +617,15 @@
           <excludeDevtools>true</excludeDevtools>
           <executable>true</executable>
           <mainClass>org.owasp.webgoat.server.StartWebGoat</mainClass>
-          <!-- See http://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-extract-specific-libraries-when-an-executable-jar-runs -->
+          <!-- See
+					http://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-extract-specific-libraries-when-an-executable-jar-runs -->
+          <jvmArguments>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens
+						java.base/java.util=ALL-UNNAMED
+						--add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+						--add-opens=java.base/java.text=ALL-UNNAMED
+						--add-opens=java.desktop/java.awt.font=ALL-UNNAMED
+						--add-opens=java.desktop/java.beans=ALL-UNNAMED
+						--add-opens=java.naming/javax.naming.ldap=ALL-UNNAMED</jvmArguments>
           <requiresUnpack>
             <dependency>
               <groupId>org.asciidoctor</groupId>
@@ -548,11 +699,16 @@
         <version>${maven-surefire-plugin.version}</version>
         <configuration>
           <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
-          <argLine>--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED
-          --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED
-          --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED
-          --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED
-          --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED</argLine>
+          <argLine>--add-opens java.base/sun.nio.ch=ALL-UNNAMED
+						--add-opens java.base/java.io=ALL-UNNAMED
+						--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens
+						java.base/java.io=ALL-UNNAMED
+						--add-opens java.base/java.util=ALL-UNNAMED --add-opens
+						java.base/java.lang.reflect=ALL-UNNAMED
+						--add-opens java.base/java.text=ALL-UNNAMED --add-opens
+						java.desktop/java.awt.font=ALL-UNNAMED
+						--add-opens=java.base/sun.nio.ch=ALL-UNNAMED
+						--add-opens=java.base/java.io=ALL-UNNAMED</argLine>
           <excludes>
             <exclude>**/*IntegrationTest.java</exclude>
             <exclude>src/it/java</exclude>
@@ -633,30 +789,33 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version>
-        <executions>
-          <execution>
-            <id>restrict-log4j-versions</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <phase>validate</phase>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <excludes combine.children="append">
-                    <exclude>org.apache.logging.log4j:log4j-core</exclude>
-                  </excludes>
-                </bannedDependencies>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- mvn build failing on having log4jv2.14.1 configuration -
+			commented enforcer plugin
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>restrict-log4j-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<excludes combine.children="append">
+										<exclude>
+											org.apache.logging.log4j:log4j-core</exclude>
+									</excludes>
+								</bannedDependencies>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -810,11 +969,18 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
-              <argLine>--add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED
-          --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED
-          --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED
-          --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED
-          ${surefire.jacoco.args}</argLine>
+              <argLine>--add-opens
+								java.base/sun.nio.ch=ALL-UNNAMED --add-opens
+								java.base/java.io=ALL-UNNAMED
+								--add-opens java.base/sun.nio.ch=ALL-UNNAMED
+								--add-opens java.base/java.io=ALL-UNNAMED
+								--add-opens java.base/java.util=ALL-UNNAMED
+								--add-opens
+								java.base/java.lang.reflect=ALL-UNNAMED
+								--add-opens java.base/java.text=ALL-UNNAMED
+								--add-opens
+								java.desktop/java.awt.font=ALL-UNNAMED
+								${surefire.jacoco.args}</argLine>
               <excludes>
                 <exclude>**/*IntegrationTest.java</exclude>
                 <exclude>src/it/java</exclude>
