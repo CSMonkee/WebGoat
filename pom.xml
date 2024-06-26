@@ -338,6 +338,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>5.3.15</version>
+		</dependency> 
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>5.3.15</version>
 		</dependency> -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -590,8 +596,20 @@ https://security.snyk.io/vuln/SNYK-JAVA-ORGPOSTGRESQL-6252740  CVE-2022-26520 --
         <version>2.3.2</version>
 
 </dependency>
+
     <!-- end CVE-2023-39017 -->
- 
+ <!-- CVE-2022-22980 https://security.snyk.io/vuln/SNYK-JAVA-ORGSPRINGFRAMEWORKDATA-2932975--> 
+ <!--
+ 	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency> -->
+ 	<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+<!-- CVE-2022-22980 -->
   </dependencies>
   <!--
 	<repositories>
