@@ -610,6 +610,25 @@ https://security.snyk.io/vuln/SNYK-JAVA-ORGPOSTGRESQL-6252740  CVE-2022-26520 --
 			<version>3.4.0</version>
 		</dependency>
 <!-- CVE-2022-22980 -->
+
+
+<!-- itextpdf.io - 	Start CVE-2021-43113 -->
+	<dependency>
+			<groupId> com.itextpdf</groupId>
+			<artifactId>io</artifactId>
+			<version>7.1.12</version>
+		</dependency>
+		
+	<dependency>
+			<groupId> com.itextpdf</groupId>
+			<artifactId>kernel</artifactId>
+			<version>7.1.12</version>
+		</dependency>	
+		
+		
+
+<!-- itextpdf.io - 	CVE-2021-43113 -->
+
   </dependencies>
   <!--
 	<repositories>
