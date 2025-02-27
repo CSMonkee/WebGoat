@@ -22,9 +22,10 @@
 
 package org.owasp.webgoat.lessons.cryptography;
 
-import java.util.SecureRandom;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 import javax.xml.bind.DatatypeConverter;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -49,7 +50,7 @@ public class HashingAssignment extends AssignmentEndpoint {
     String md5Hash = (String) request.getSession().getAttribute("md5Hash");
     if (md5Hash == null) {
 
-      String secret = SECRETS[secureRandom.nextInt(SECRETS.length)];
+      String secret = SECRETS[new Random().nextInt(SECRETS.length)];
 
       MessageDigest md = MessageDigest.getInstance("MD5");
       md.update(secret.getBytes());
