@@ -39,5 +39,6 @@ jobs:
       - name: Build and test WebGoat
         env:
           MAVEN_OPTS: "-Djava.awt.headless=true"
-        run: mvn clean verify -B
+        # run: mvn clean verify -B 
+        run: mvn --no-transfer-progress verify
 
