@@ -42,8 +42,14 @@ jobs:
       #   # run: mvn clean verify -B 
       #   run: mvn --no-transfer-progress verify
 
-      - name: Build and test WebGoat (skip integration tests)
+      # - name: Build and test WebGoat (skip integration tests)
+      #   env:
+      #     MAVEN_OPTS: "-Djava.awt.headless=true"
+      #   run: mvn --no-transfer-progress clean verify -DskipITs -DskipTests
+
+
+      - name: Package WebGoat (no tests, no run)
         env:
           MAVEN_OPTS: "-Djava.awt.headless=true"
-        run: mvn --no-transfer-progress clean verify -DskipITs -DskipTests
+        run: mvn --no-transfer-progress clean package -DskipTests
 
