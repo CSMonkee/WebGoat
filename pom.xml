@@ -607,7 +607,7 @@ https://security.snyk.io/vuln/SNYK-JAVA-ORGPOSTGRESQL-6252740  CVE-2022-26520 --
  	<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>3.4.0</version>
+			<version>4.4.10</version>
 		</dependency>
 <!-- CVE-2022-22980 -->
 
