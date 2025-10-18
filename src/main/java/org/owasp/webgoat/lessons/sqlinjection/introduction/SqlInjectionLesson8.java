@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import custom.sanitiser.Util.myStringSanitiser;
 
 @RestController
 @AssignmentHints(
@@ -61,6 +62,8 @@ public class SqlInjectionLesson8 extends AssignmentEndpoint {
   }
 
   protected AttackResult injectableQueryConfidentiality(String name, String auth_tan) {
+    name = custom.sanitiser.Util.myStringSanitiser(name);
+    auth_tan = custom.sanitiser.Util.myStringSanitiser(auth_tan);
     StringBuilder output = new StringBuilder();
     String query =
         "SELECT * FROM employees WHERE last_name = '"
