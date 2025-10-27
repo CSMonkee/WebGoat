@@ -1,0 +1,15 @@
+name: Do Nothing
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "This job does nothing and succeeds"
+
