@@ -66,4 +66,8 @@ jobs:
       # Mock build step
       - name: Build the image
         run: mvn validate -DskipTests -fn -q
+
+      # Image build for deployment to 
+      - name: Report image and version
+        run: echo "Built ${{ inputs.image }}. Run ID ${{ inputs.run_id }}"
       
