@@ -7,13 +7,15 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Select environment'
+      image:
+        description: 'The new image to use for the rollback'
         required: true
-        default: 'staging'
-      version:
-        description: 'Version to deploy'
-        required: false
+        type: string
+      run_id:
+        description: 'Port action run ID'
+        required: true
+        type: string
+        
 jobs:
   build:
     runs-on: ubuntu-latest
