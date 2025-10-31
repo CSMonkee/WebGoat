@@ -1,0 +1,62 @@
+name: WebGoat CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'The new image to use for the rollback'
+        required: true
+        type: string
+        default: "WebGoat"
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: string
+        default: "Staging"
+      run_id:
+        description: 'Port action run ID'
+        required: true
+        type: string
+        default: "N/A"
+        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up JDK 21
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # 3. Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 4. Verify Java version
+      - name: Check Java version
+        run: java -version
+
+      # Mock build step
+      - name: Deplo the image
+        run: mvn validate -DskipTests -fn -q
+
+      # Image build for deployment to 
+      - name: Report image, env and version
+        run: echo "Deployed ${{ inputs.image }} to ${{ inputs.environment }}. Run ID ${{ inputs.run_id }}"
+      
