@@ -574,7 +574,7 @@ https://security.snyk.io/vuln/SNYK-JAVA-ORGPOSTGRESQL-6252740  CVE-2022-26520 --
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.0</version>
+      <version>42.7.5</version>
     </dependency>
 
     <!-- end CVE-2022-26520 -->
